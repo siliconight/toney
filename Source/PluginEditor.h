@@ -86,7 +86,7 @@ private:
 class CompModule : public juce::Component
 {
 public:
-    explicit CompModule (ToneSuiteAudioProcessor&);
+    explicit CompModule (ToneyAudioProcessor&);
     void paint (juce::Graphics&) override;
     void resized() override;
 
@@ -94,7 +94,7 @@ private:
     using SliderAtt = juce::AudioProcessorValueTreeState::SliderAttachment;
     using BoxAtt    = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
 
-    ToneSuiteAudioProcessor& proc;
+    ToneyAudioProcessor& proc;
     juce::Slider   input, thresh, makeup, mix;
     juce::ComboBox time;
     juce::Label    inputL, threshL, timeL, makeupL, mixL, title;
@@ -107,7 +107,7 @@ private:
 class TapeModule : public juce::Component
 {
 public:
-    explicit TapeModule (ToneSuiteAudioProcessor&);
+    explicit TapeModule (ToneyAudioProcessor&);
     void paint (juce::Graphics&) override;
     void resized() override;
 
@@ -115,7 +115,7 @@ private:
     using SliderAtt = juce::AudioProcessorValueTreeState::SliderAttachment;
     using BoxAtt    = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
 
-    ToneSuiteAudioProcessor& proc;
+    ToneyAudioProcessor& proc;
     juce::Slider   drive, bias, out;
     juce::ComboBox speed;
     juce::Label    driveL, biasL, speedL, outL, title;
@@ -127,7 +127,7 @@ private:
 class DynamicsModule : public juce::Component
 {
 public:
-    explicit DynamicsModule (ToneSuiteAudioProcessor&);
+    explicit DynamicsModule (ToneyAudioProcessor&);
     void paint (juce::Graphics&) override;
     void resized() override;
 
@@ -142,7 +142,7 @@ private:
         std::unique_ptr<SliderAtt> a1, a2, a3;
     };
 
-    ToneSuiteAudioProcessor& proc;
+    ToneyAudioProcessor& proc;
     juce::Label title;
     std::array<Row, 3> rows;
 };
@@ -153,7 +153,7 @@ private:
 class ResonanceModule : public juce::Component, private juce::Timer
 {
 public:
-    explicit ResonanceModule (ToneSuiteAudioProcessor&);
+    explicit ResonanceModule (ToneyAudioProcessor&);
     ~ResonanceModule() override;
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -163,7 +163,7 @@ private:
 
     using SliderAtt = juce::AudioProcessorValueTreeState::SliderAttachment;
 
-    ToneSuiteAudioProcessor& proc;
+    ToneyAudioProcessor& proc;
     juce::Slider depth, thresh, atk, rel, mix;
     juce::Label  depthL, threshL, atkL, relL, mixL, title;
 
@@ -175,11 +175,11 @@ private:
 //==============================================================================
 //  Main editor.
 //==============================================================================
-class ToneSuiteAudioProcessorEditor : public juce::AudioProcessorEditor
+class ToneyAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
-    explicit ToneSuiteAudioProcessorEditor (ToneSuiteAudioProcessor&);
-    ~ToneSuiteAudioProcessorEditor() override;
+    explicit ToneyAudioProcessorEditor (ToneyAudioProcessor&);
+    ~ToneyAudioProcessorEditor() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
@@ -189,7 +189,7 @@ private:
     using SliderAtt = APVTS::SliderAttachment;
     using BtnAtt    = APVTS::ButtonAttachment;
 
-    ToneSuiteAudioProcessor& proc;
+    ToneyAudioProcessor& proc;
     ProLookAndFeel lnf;
 
     SpectrumView    spectrum;
@@ -208,5 +208,5 @@ private:
     std::unique_ptr<SliderAtt> aOutput;
     std::unique_ptr<BtnAtt>    aBypass;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ToneSuiteAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ToneyAudioProcessorEditor)
 };

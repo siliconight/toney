@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(ToneSuite VERSION 1.0.0)
+project(Toney VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -38,20 +38,20 @@ FetchContent_MakeAvailable(JUCE)
 # Plugin identity. CHANGE THESE if you're publishing - the 4-char codes
 # below are not registered; for a release you should pick your own.
 # ---------------------------------------------------------------------------
-juce_add_plugin(ToneSuite
+juce_add_plugin(Toney
     COMPANY_NAME            "YourCompany"
-    BUNDLE_ID               "com.yourcompany.tonesuite"
+    BUNDLE_ID               "com.yourcompany.toney"
     PLUGIN_MANUFACTURER_CODE Yorc     # 4 chars, must contain >=1 uppercase
     PLUGIN_CODE             Pteq      # 4 chars, must contain >=1 uppercase
     FORMATS                 AU VST3 Standalone
-    PRODUCT_NAME            "Tone Suite"
+    PRODUCT_NAME            "Toney"
     IS_SYNTH                FALSE
     NEEDS_MIDI_INPUT        FALSE
     NEEDS_MIDI_OUTPUT       FALSE
     IS_MIDI_EFFECT          FALSE
     COPY_PLUGIN_AFTER_BUILD TRUE)     # auto-installs to ~/Library/Audio/Plug-Ins/{Components,VST3}/
 
-target_sources(ToneSuite PRIVATE
+target_sources(Toney PRIVATE
     Source/PluginProcessor.cpp
     Source/PluginEditor.cpp
     Source/SpectrumView.cpp
@@ -62,12 +62,12 @@ target_sources(ToneSuite PRIVATE
     Source/SpectrumView.h
     Source/ResonanceSuppressor.h)
 
-target_compile_definitions(ToneSuite PUBLIC
+target_compile_definitions(Toney PUBLIC
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0)
 
-target_link_libraries(ToneSuite PRIVATE
+target_link_libraries(Toney PRIVATE
     juce::juce_audio_utils
     juce::juce_dsp
     PUBLIC
@@ -83,8 +83,8 @@ target_link_libraries(ToneSuite PRIVATE
 # ---------------------------------------------------------------------------
 if(APPLE)
     foreach(fmt IN ITEMS AU VST3 Standalone)
-        if(TARGET ToneSuite_${fmt})
-            set_target_properties(ToneSuite_${fmt} PROPERTIES
+        if(TARGET Toney_${fmt})
+            set_target_properties(Toney_${fmt} PROPERTIES
                 XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "-"
                 XCODE_ATTRIBUTE_CODE_SIGN_STYLE   "Automatic")
         endif()

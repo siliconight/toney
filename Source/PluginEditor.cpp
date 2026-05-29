@@ -260,7 +260,7 @@ static void paintModuleBg (juce::Component& c, juce::Graphics& g, const juce::St
 //==============================================================================
 //  CompModule
 //==============================================================================
-CompModule::CompModule (ToneSuiteAudioProcessor& p)
+CompModule::CompModule (ToneyAudioProcessor& p)
     : proc (p), meter (p.compGainReductionDb)
 {
     for (auto* s : { &input, &thresh, &makeup, &mix }) styleKnob (*s, *this);
@@ -305,7 +305,7 @@ void CompModule::resized()
 //==============================================================================
 //  TapeModule
 //==============================================================================
-TapeModule::TapeModule (ToneSuiteAudioProcessor& p) : proc (p)
+TapeModule::TapeModule (ToneyAudioProcessor& p) : proc (p)
 {
     for (auto* s : { &drive, &bias, &out }) styleKnob (*s, *this);
     speed.addItemList ({ "7.5 IPS", "15 IPS", "30 IPS" }, 1);
@@ -344,7 +344,7 @@ void TapeModule::resized()
 //==============================================================================
 //  DynamicsModule  -  thresh/atk/rel for each of the 3 bands
 //==============================================================================
-DynamicsModule::DynamicsModule (ToneSuiteAudioProcessor& p) : proc (p)
+DynamicsModule::DynamicsModule (ToneyAudioProcessor& p) : proc (p)
 {
     styleLabel (title, "DYNAMICS", *this, 12.0f, true, juce::Justification::left);
 
@@ -393,7 +393,7 @@ void DynamicsModule::resized()
 //==============================================================================
 //  ResonanceModule  -  surgical cleanup
 //==============================================================================
-ResonanceModule::ResonanceModule (ToneSuiteAudioProcessor& p) : proc (p)
+ResonanceModule::ResonanceModule (ToneyAudioProcessor& p) : proc (p)
 {
     for (auto* s : { &depth, &thresh, &atk, &rel, &mix }) styleKnob (*s, *this);
 
@@ -464,7 +464,7 @@ void ResonanceModule::resized()
 //==============================================================================
 //  Main editor
 //==============================================================================
-ToneSuiteAudioProcessorEditor::ToneSuiteAudioProcessorEditor (ToneSuiteAudioProcessor& p)
+ToneyAudioProcessorEditor::ToneyAudioProcessorEditor (ToneyAudioProcessor& p)
     : AudioProcessorEditor (&p),
       proc (p),
       spectrum     (p),
@@ -504,12 +504,12 @@ ToneSuiteAudioProcessorEditor::ToneSuiteAudioProcessorEditor (ToneSuiteAudioProc
     setSize (1100, 860);
 }
 
-ToneSuiteAudioProcessorEditor::~ToneSuiteAudioProcessorEditor()
+ToneyAudioProcessorEditor::~ToneyAudioProcessorEditor()
 {
     setLookAndFeel (nullptr);
 }
 
-void ToneSuiteAudioProcessorEditor::paint (juce::Graphics& g)
+void ToneyAudioProcessorEditor::paint (juce::Graphics& g)
 {
     g.fillAll (kBgDeep);
 
@@ -534,7 +534,7 @@ void ToneSuiteAudioProcessorEditor::paint (juce::Graphics& g)
                 juce::Justification::bottomLeft);
 }
 
-void ToneSuiteAudioProcessorEditor::resized()
+void ToneyAudioProcessorEditor::resized()
 {
     auto r = getLocalBounds();
 

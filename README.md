@@ -1,10 +1,10 @@
-# Tone Suite
+# Toney
 
 A JUCE-based **AU / VST3 / Standalone** mastering chain plugin: passive program
 EQ + variable-mu compressor + dynamic EQ + tape stage + dynamic resonance
 suppressor, driven from a single interactive spectrum display.
 
-> **Name placeholder.** "Tone Suite" is a generic working name. Pick your own
+> **Name placeholder.** "Toney" is a generic working name. Pick your own
 > before publishing - see [Renaming](#renaming) below.
 
 ## What it does
@@ -76,8 +76,8 @@ up to `Depth` dB. Off by default - destructive opt-in processing.
 ### Build
 
 ```bash
-git clone https://github.com/<you>/<this-repo>.git ToneSuite
-cd ToneSuite
+git clone https://github.com/<you>/<this-repo>.git Toney
+cd Toney
 bash build.sh
 ```
 
@@ -85,18 +85,18 @@ That script:
 
 1. Configures a universal-binary (Apple Silicon + Intel) Xcode project
 2. Builds Release
-3. Copies the AU to `~/Library/Audio/Plug-Ins/Components/Tone Suite.component`
-   and the VST3 to `~/Library/Audio/Plug-Ins/VST3/Tone Suite.vst3`
+3. Copies the AU to `~/Library/Audio/Plug-Ins/Components/Toney.component`
+   and the VST3 to `~/Library/Audio/Plug-Ins/VST3/Toney.vst3`
 4. Runs `auval -v aufx Pteq Yorc` (same validation Logic uses internally)
 
 ### Open it in Logic
 
 1. Open Logic Pro
 2. **Logic Pro -> Settings -> Plug-In Manager**
-3. Find **Tone Suite** in the list. If it's red, click **Reset & Rescan
+3. Find **Toney** in the list. If it's red, click **Reset & Rescan
    Selection**.
 4. Close the manager. The plugin is now under **Audio FX -> YourCompany ->
-   Tone Suite** on any channel.
+   Toney** on any channel.
 
 If Logic doesn't see it at all, clear the AU cache and force a rescan:
 
@@ -109,7 +109,7 @@ then reopen Logic.
 
 ### Renaming
 
-The 4-character codes `Pteq` / `Yorc` and the name "Tone Suite" are
+The 4-character codes `Pteq` / `Yorc` and the name "Toney" are
 placeholders. Edit `CMakeLists.txt` to publish under your own name:
 
 ```cmake
@@ -127,7 +127,7 @@ share a code, Logic will reject one of them.
 
 `.github/workflows/build.yml` builds a universal-binary AU + VST3 on every
 push and on any tag matching `v*`. It validates the AU with `auval` and
-uploads the bundles as a `ToneSuite-macOS.zip` workflow artifact. Tag pushes
+uploads the bundles as a `Toney-macOS.zip` workflow artifact. Tag pushes
 also create a GitHub Release with the zip attached.
 
 ## Implementation notes
@@ -156,7 +156,7 @@ also create a GitHub Release with the zip attached.
 ## Files
 
 ```
-ToneSuite/
+Toney/
 ├── CMakeLists.txt              # universal binary, macOS settings, ad-hoc signing
 ├── build.sh                    # one-command local build + install + auval
 ├── README.md                   # this file

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # ---------------------------------------------------------------------------
 # Builds the AU and VST3 as a universal (arm64 + x86_64) Release on macOS.
-# Outputs land in build/ToneSuite_artefacts/Release/{AU,VST3,Standalone}/ and,
+# Outputs land in build/Toney_artefacts/Release/{AU,VST3,Standalone}/ and,
 # because the CMakeLists has COPY_PLUGIN_AFTER_BUILD TRUE, are also copied to:
-#   ~/Library/Audio/Plug-Ins/Components/Tone Suite.component
-#   ~/Library/Audio/Plug-Ins/VST3/Tone Suite.vst3
+#   ~/Library/Audio/Plug-Ins/Components/Toney.component
+#   ~/Library/Audio/Plug-Ins/VST3/Toney.vst3
 # ---------------------------------------------------------------------------
 set -euo pipefail
 
@@ -19,7 +19,7 @@ cmake -B "$BUILD_DIR" -G Xcode \
 echo "==> Building"
 cmake --build "$BUILD_DIR" --config Release --parallel
 
-AU_PATH="$HOME/Library/Audio/Plug-Ins/Components/Tone Suite.component"
+AU_PATH="$HOME/Library/Audio/Plug-Ins/Components/Toney.component"
 if [[ -d "$AU_PATH" ]]; then
     echo
     echo "==> Installed AU: $AU_PATH"
@@ -37,7 +37,7 @@ if [[ -d "$AU_PATH" ]]; then
     }
     echo
     echo "==> Success. Open Logic, it will rescan the AU and you should see"
-    echo "    'Tone Suite' under YourCompany in the plugin browser."
+    echo "    'Toney' under YourCompany in the plugin browser."
 else
     echo "Build succeeded but AU was not copied. Check Xcode build output."
 fi

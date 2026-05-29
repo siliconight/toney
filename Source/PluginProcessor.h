@@ -23,11 +23,11 @@
 //  produces a bump in the deep lows with a scoop just above it. We recreate that
 //  by cornering the cut shelf above the boost shelf (LOW_CUT_RATIO).
 //==============================================================================
-class ToneSuiteAudioProcessor : public juce::AudioProcessor
+class ToneyAudioProcessor : public juce::AudioProcessor
 {
 public:
-    ToneSuiteAudioProcessor();
-    ~ToneSuiteAudioProcessor() override = default;
+    ToneyAudioProcessor();
+    ~ToneyAudioProcessor() override = default;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -123,5 +123,5 @@ private:
 
     juce::SmoothedValue<float> outputGain { 1.0f };
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ToneSuiteAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ToneyAudioProcessor)
 };

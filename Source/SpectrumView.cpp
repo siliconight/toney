@@ -18,7 +18,7 @@ namespace
 }
 
 //==============================================================================
-SpectrumView::SpectrumView (ToneSuiteAudioProcessor& p) : proc (p)
+SpectrumView::SpectrumView (ToneyAudioProcessor& p) : proc (p)
 {
     buildHandles();
     setMouseCursor (juce::MouseCursor::CrosshairCursor);
@@ -81,16 +81,16 @@ void SpectrumView::buildHandles()
         Handle h;
         h.name  = "Low Boost";
         h.color = kEqBoost;
-        h.getFreq    = [&v, getF] { return ToneSuiteAudioProcessor::kLowFreqs[(size_t) juce::jlimit (0, 3, (int) getF ("lowFreq"))]; };
-        h.getGainDb  = [getF] { return  (getF ("lowBoost") / 10.0f) * ToneSuiteAudioProcessor::kLowBoostMaxDb; };
+        h.getFreq    = [&v, getF] { return ToneyAudioProcessor::kLowFreqs[(size_t) juce::jlimit (0, 3, (int) getF ("lowFreq"))]; };
+        h.getGainDb  = [getF] { return  (getF ("lowBoost") / 10.0f) * ToneyAudioProcessor::kLowBoostMaxDb; };
         h.getQ       = [] { return 0.0f; };
         h.getActivity = [] { return 0.0f; };
         h.isEnabled  = [getF] { return getF ("eqBypass") < 0.5f && getF ("lowBoost") > 0.001f; };
         h.setFreq    = [this, snapChoice] (float hz)
-                       { snapChoice ("lowFreq", ToneSuiteAudioProcessor::kLowFreqs, hz); };
+                       { snapChoice ("lowFreq", ToneyAudioProcessor::kLowFreqs, hz); };
         h.setGainDb  = [this] (float db)
                        {
-                           const float dial = juce::jlimit (0.0f, 10.0f, db / ToneSuiteAudioProcessor::kLowBoostMaxDb * 10.0f);
+                           const float dial = juce::jlimit (0.0f, 10.0f, db / ToneyAudioProcessor::kLowBoostMaxDb * 10.0f);
                            setParamValue ("lowBoost", dial);
                        };
         h.setQ = [] (float) {};
@@ -103,16 +103,16 @@ void SpectrumView::buildHandles()
         h.name  = "Low Atten";
         h.color = kEqCut;
         h.isCut = true;
-        h.getFreq    = [&v, getF] { return ToneSuiteAudioProcessor::kLowFreqs[(size_t) juce::jlimit (0, 3, (int) getF ("lowFreq"))]; };
-        h.getGainDb  = [getF] { return -(getF ("lowAtten") / 10.0f) * ToneSuiteAudioProcessor::kLowAttenMaxDb; };
+        h.getFreq    = [&v, getF] { return ToneyAudioProcessor::kLowFreqs[(size_t) juce::jlimit (0, 3, (int) getF ("lowFreq"))]; };
+        h.getGainDb  = [getF] { return -(getF ("lowAtten") / 10.0f) * ToneyAudioProcessor::kLowAttenMaxDb; };
         h.getQ       = [] { return 0.0f; };
         h.getActivity = [] { return 0.0f; };
         h.isEnabled  = [getF] { return getF ("eqBypass") < 0.5f && getF ("lowAtten") > 0.001f; };
         h.setFreq    = [this, snapChoice] (float hz)
-                       { snapChoice ("lowFreq", ToneSuiteAudioProcessor::kLowFreqs, hz); };
+                       { snapChoice ("lowFreq", ToneyAudioProcessor::kLowFreqs, hz); };
         h.setGainDb  = [this] (float db)
                        {
-                           const float dial = juce::jlimit (0.0f, 10.0f, (-db) / ToneSuiteAudioProcessor::kLowAttenMaxDb * 10.0f);
+                           const float dial = juce::jlimit (0.0f, 10.0f, (-db) / ToneyAudioProcessor::kLowAttenMaxDb * 10.0f);
                            setParamValue ("lowAtten", dial);
                        };
         h.setQ = [] (float) {};
@@ -124,16 +124,16 @@ void SpectrumView::buildHandles()
         Handle h;
         h.name  = "High Boost";
         h.color = kEqBoost;
-        h.getFreq    = [getF] { return ToneSuiteAudioProcessor::kHighBoostFreqs[(size_t) juce::jlimit (0, 6, (int) getF ("highFreq"))]; };
-        h.getGainDb  = [getF] { return (getF ("highBoost") / 10.0f) * ToneSuiteAudioProcessor::kHighBoostMaxDb; };
+        h.getFreq    = [getF] { return ToneyAudioProcessor::kHighBoostFreqs[(size_t) juce::jlimit (0, 6, (int) getF ("highFreq"))]; };
+        h.getGainDb  = [getF] { return (getF ("highBoost") / 10.0f) * ToneyAudioProcessor::kHighBoostMaxDb; };
         h.getQ       = [getF] { return juce::jmap (getF ("highBW"), 0.0f, 10.0f, 0.6f, 3.5f); };
         h.getActivity = [] { return 0.0f; };
         h.isEnabled  = [getF] { return getF ("eqBypass") < 0.5f && getF ("highBoost") > 0.001f; };
         h.setFreq    = [this, snapChoice] (float hz)
-                       { snapChoice ("highFreq", ToneSuiteAudioProcessor::kHighBoostFreqs, hz); };
+                       { snapChoice ("highFreq", ToneyAudioProcessor::kHighBoostFreqs, hz); };
         h.setGainDb  = [this] (float db)
                        {
-                           const float dial = juce::jlimit (0.0f, 10.0f, db / ToneSuiteAudioProcessor::kHighBoostMaxDb * 10.0f);
+                           const float dial = juce::jlimit (0.0f, 10.0f, db / ToneyAudioProcessor::kHighBoostMaxDb * 10.0f);
                            setParamValue ("highBoost", dial);
                        };
         h.setQ = [this] (float q)
@@ -150,16 +150,16 @@ void SpectrumView::buildHandles()
         h.name  = "High Atten";
         h.color = kEqCut;
         h.isCut = true;
-        h.getFreq    = [getF] { return ToneSuiteAudioProcessor::kHighAttenFreqs[(size_t) juce::jlimit (0, 2, (int) getF ("highAttenFreq"))]; };
-        h.getGainDb  = [getF] { return -(getF ("highAtten") / 10.0f) * ToneSuiteAudioProcessor::kHighAttenMaxDb; };
+        h.getFreq    = [getF] { return ToneyAudioProcessor::kHighAttenFreqs[(size_t) juce::jlimit (0, 2, (int) getF ("highAttenFreq"))]; };
+        h.getGainDb  = [getF] { return -(getF ("highAtten") / 10.0f) * ToneyAudioProcessor::kHighAttenMaxDb; };
         h.getQ       = [] { return 0.0f; };
         h.getActivity = [] { return 0.0f; };
         h.isEnabled  = [getF] { return getF ("eqBypass") < 0.5f && getF ("highAtten") > 0.001f; };
         h.setFreq    = [this, snapChoice] (float hz)
-                       { snapChoice ("highAttenFreq", ToneSuiteAudioProcessor::kHighAttenFreqs, hz); };
+                       { snapChoice ("highAttenFreq", ToneyAudioProcessor::kHighAttenFreqs, hz); };
         h.setGainDb  = [this] (float db)
                        {
-                           const float dial = juce::jlimit (0.0f, 10.0f, (-db) / ToneSuiteAudioProcessor::kHighAttenMaxDb * 10.0f);
+                           const float dial = juce::jlimit (0.0f, 10.0f, (-db) / ToneyAudioProcessor::kHighAttenMaxDb * 10.0f);
                            setParamValue ("highAtten", dial);
                        };
         h.setQ = [] (float) {};
@@ -204,25 +204,25 @@ void SpectrumView::refreshCoefficients()
 
     // Static EQ - match the audio path exactly.
     {
-        const float lowF    = ToneSuiteAudioProcessor::kLowFreqs[(size_t) juce::jlimit (0, 3, (int) get ("lowFreq"))];
-        const float boostDb =  (get ("lowBoost") / 10.0f) * ToneSuiteAudioProcessor::kLowBoostMaxDb;
-        const float attenDb = -(get ("lowAtten") / 10.0f) * ToneSuiteAudioProcessor::kLowAttenMaxDb;
+        const float lowF    = ToneyAudioProcessor::kLowFreqs[(size_t) juce::jlimit (0, 3, (int) get ("lowFreq"))];
+        const float boostDb =  (get ("lowBoost") / 10.0f) * ToneyAudioProcessor::kLowBoostMaxDb;
+        const float attenDb = -(get ("lowAtten") / 10.0f) * ToneyAudioProcessor::kLowAttenMaxDb;
 
-        cLowBoost = Coeffs::makeLowShelf (sr, lowF, ToneSuiteAudioProcessor::kLowShelfQ,
+        cLowBoost = Coeffs::makeLowShelf (sr, lowF, ToneyAudioProcessor::kLowShelfQ,
                                           juce::Decibels::decibelsToGain (boostDb));
         cLowCut   = Coeffs::makeLowShelf (sr,
-                                          juce::jmin (lowF * ToneSuiteAudioProcessor::kLowCutRatio, nyq),
-                                          ToneSuiteAudioProcessor::kLowShelfQ,
+                                          juce::jmin (lowF * ToneyAudioProcessor::kLowCutRatio, nyq),
+                                          ToneyAudioProcessor::kLowShelfQ,
                                           juce::Decibels::decibelsToGain (attenDb));
 
-        const float highF    = ToneSuiteAudioProcessor::kHighBoostFreqs[(size_t) juce::jlimit (0, 6, (int) get ("highFreq"))];
-        const float hBoostDb = (get ("highBoost") / 10.0f) * ToneSuiteAudioProcessor::kHighBoostMaxDb;
+        const float highF    = ToneyAudioProcessor::kHighBoostFreqs[(size_t) juce::jlimit (0, 6, (int) get ("highFreq"))];
+        const float hBoostDb = (get ("highBoost") / 10.0f) * ToneyAudioProcessor::kHighBoostMaxDb;
         const float q        = juce::jmap (get ("highBW"), 0.0f, 10.0f, 0.6f, 3.5f);
         cHighBoost = Coeffs::makePeakFilter (sr, juce::jmin (highF, nyq), q,
                                              juce::Decibels::decibelsToGain (hBoostDb));
 
-        const float haF       = ToneSuiteAudioProcessor::kHighAttenFreqs[(size_t) juce::jlimit (0, 2, (int) get ("highAttenFreq"))];
-        const float hAttenDb  = -(get ("highAtten") / 10.0f) * ToneSuiteAudioProcessor::kHighAttenMaxDb;
+        const float haF       = ToneyAudioProcessor::kHighAttenFreqs[(size_t) juce::jlimit (0, 2, (int) get ("highAttenFreq"))];
+        const float hAttenDb  = -(get ("highAtten") / 10.0f) * ToneyAudioProcessor::kHighAttenMaxDb;
         cHighCut = Coeffs::makeHighShelf (sr, juce::jmin (haF, nyq), 0.7f,
                                           juce::Decibels::decibelsToGain (hAttenDb));
     }

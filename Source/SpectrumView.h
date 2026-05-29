@@ -21,7 +21,7 @@ class SpectrumView : public juce::Component,
                      private juce::Timer
 {
 public:
-    explicit SpectrumView (ToneSuiteAudioProcessor&);
+    explicit SpectrumView (ToneyAudioProcessor&);
     ~SpectrumView() override;
 
     void paint (juce::Graphics&) override;
@@ -77,7 +77,7 @@ private:
     void setParamValue       (const juce::String& id, float value) const;
 
     //==============================================================================
-    ToneSuiteAudioProcessor& proc;
+    ToneyAudioProcessor& proc;
     std::vector<Handle> handles;
 
     int hoveredIdx  = -1;

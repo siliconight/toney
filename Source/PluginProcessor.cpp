@@ -4,9 +4,9 @@
 //==============================================================================
 //  Frequency selector tables (Hz) - the classic passive program EQ stepped values.
 //==============================================================================
-const std::array<float, 4> ToneSuiteAudioProcessor::kLowFreqs       { 20.f, 30.f, 60.f, 100.f };
-const std::array<float, 7> ToneSuiteAudioProcessor::kHighBoostFreqs  { 3000.f, 4000.f, 5000.f, 8000.f, 10000.f, 12000.f, 16000.f };
-const std::array<float, 3> ToneSuiteAudioProcessor::kHighAttenFreqs  { 5000.f, 10000.f, 20000.f };
+const std::array<float, 4> ToneyAudioProcessor::kLowFreqs       { 20.f, 30.f, 60.f, 100.f };
+const std::array<float, 7> ToneyAudioProcessor::kHighBoostFreqs  { 3000.f, 4000.f, 5000.f, 8000.f, 10000.f, 12000.f, 16000.f };
+const std::array<float, 3> ToneyAudioProcessor::kHighAttenFreqs  { 5000.f, 10000.f, 20000.f };
 
 //==============================================================================
 //  Voicing constants now live as static constexpr members of the processor
@@ -14,7 +14,7 @@ const std::array<float, 3> ToneSuiteAudioProcessor::kHighAttenFreqs  { 5000.f, 1
 //==============================================================================
 
 //==============================================================================
-ToneSuiteAudioProcessor::ToneSuiteAudioProcessor()
+ToneyAudioProcessor::ToneyAudioProcessor()
     : AudioProcessor (BusesProperties()
           .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
           .withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
@@ -24,7 +24,7 @@ ToneSuiteAudioProcessor::ToneSuiteAudioProcessor()
 
 //==============================================================================
 juce::AudioProcessorValueTreeState::ParameterLayout
-ToneSuiteAudioProcessor::createParameterLayout()
+ToneyAudioProcessor::createParameterLayout()
 {
     using namespace juce;
     AudioProcessorValueTreeState::ParameterLayout layout;
@@ -132,7 +132,7 @@ ToneSuiteAudioProcessor::createParameterLayout()
 }
 
 //==============================================================================
-void ToneSuiteAudioProcessor::prepareToPlay (double sr, int samplesPerBlock)
+void ToneyAudioProcessor::prepareToPlay (double sr, int samplesPerBlock)
 {
     sampleRate = sr;
     spec.sampleRate       = sr;
@@ -163,7 +163,7 @@ void ToneSuiteAudioProcessor::prepareToPlay (double sr, int samplesPerBlock)
     updateFilters();
 }
 
-bool ToneSuiteAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool ToneyAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
     const auto& main = layouts.getMainOutputChannelSet();
     if (main != juce::AudioChannelSet::mono() && main != juce::AudioChannelSet::stereo())
@@ -173,7 +173,7 @@ bool ToneSuiteAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts
 }
 
 //==============================================================================
-void ToneSuiteAudioProcessor::updateFilters()
+void ToneyAudioProcessor::updateFilters()
 {
     const auto get = [this] (const char* id) { return apvts.getRawParameterValue (id)->load(); };
 
@@ -216,7 +216,7 @@ void ToneSuiteAudioProcessor::updateFilters()
 }
 
 //==============================================================================
-float ToneSuiteAudioProcessor::tubeStage (float x, float drive) noexcept
+float ToneyAudioProcessor::tubeStage (float x, float drive) noexcept
 {
     if (drive <= 0.0f)
         return x;
@@ -233,7 +233,7 @@ float ToneSuiteAudioProcessor::tubeStage (float x, float drive) noexcept
 //  oversampled. The oversampler ALWAYS executes one up/down cycle, so the
 //  reported latency stays constant whether the stage is bypassed or driven.
 //==============================================================================
-void ToneSuiteAudioProcessor::applyEQ (juce::AudioBuffer<float>& buffer)
+void ToneyAudioProcessor::applyEQ (juce::AudioBuffer<float>& buffer)
 {
     juce::dsp::AudioBlock<float> block (buffer);
 
@@ -266,7 +266,7 @@ void ToneSuiteAudioProcessor::applyEQ (juce::AudioBuffer<float>& buffer)
     eqOversampler.processSamplesDown (block);
 }
 
-void ToneSuiteAudioProcessor::applyComp (juce::AudioBuffer<float>& buffer)
+void ToneyAudioProcessor::applyComp (juce::AudioBuffer<float>& buffer)
 {
     if (apvts.getRawParameterValue ("compBypass")->load() > 0.5f)
     {
@@ -290,7 +290,7 @@ void ToneSuiteAudioProcessor::applyComp (juce::AudioBuffer<float>& buffer)
 }
 
 //==============================================================================
-void ToneSuiteAudioProcessor::applyDynEQ (juce::AudioBuffer<float>& buffer)
+void ToneyAudioProcessor::applyDynEQ (juce::AudioBuffer<float>& buffer)
 {
     const bool bypassed = apvts.getRawParameterValue ("dynEqBypass")->load() > 0.5f;
     if (bypassed)
@@ -318,7 +318,7 @@ void ToneSuiteAudioProcessor::applyDynEQ (juce::AudioBuffer<float>& buffer)
     }
 }
 
-void ToneSuiteAudioProcessor::applyTape (juce::AudioBuffer<float>& buffer)
+void ToneyAudioProcessor::applyTape (juce::AudioBuffer<float>& buffer)
 {
     const auto get = [this] (const char* id) { return apvts.getRawParameterValue (id)->load(); };
 
@@ -331,7 +331,7 @@ void ToneSuiteAudioProcessor::applyTape (juce::AudioBuffer<float>& buffer)
 }
 
 //==============================================================================
-void ToneSuiteAudioProcessor::applyResonance (juce::AudioBuffer<float>& buffer)
+void ToneyAudioProcessor::applyResonance (juce::AudioBuffer<float>& buffer)
 {
     const auto get = [this] (const char* id) { return apvts.getRawParameterValue (id)->load(); };
 
@@ -347,7 +347,7 @@ void ToneSuiteAudioProcessor::applyResonance (juce::AudioBuffer<float>& buffer)
 }
 
 //==============================================================================
-void ToneSuiteAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
+void ToneyAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                                            juce::MidiBuffer&)
 {
     juce::ScopedNoDenormals noDenormals;
@@ -386,19 +386,19 @@ void ToneSuiteAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 }
 
 //==============================================================================
-juce::AudioProcessorEditor* ToneSuiteAudioProcessor::createEditor()
+juce::AudioProcessorEditor* ToneyAudioProcessor::createEditor()
 {
-    return new ToneSuiteAudioProcessorEditor (*this);
+    return new ToneyAudioProcessorEditor (*this);
 }
 
-void ToneSuiteAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void ToneyAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     if (auto state = apvts.copyState(); state.isValid())
         if (auto xml = state.createXml())
             copyXmlToBinary (*xml, destData);
 }
 
-void ToneSuiteAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void ToneyAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     if (auto xml = getXmlFromBinary (data, sizeInBytes))
         if (xml->hasTagName (apvts.state.getType()))
@@ -408,5 +408,5 @@ void ToneSuiteAudioProcessor::setStateInformation (const void* data, int sizeInB
 //==============================================================================
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new ToneSuiteAudioProcessor();
+    return new ToneyAudioProcessor();
 }
